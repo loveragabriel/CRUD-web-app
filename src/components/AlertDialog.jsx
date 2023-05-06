@@ -1,3 +1,4 @@
+import { Container } from '@mui/material';
 import Button from '@mui/material/Button';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
@@ -5,22 +6,28 @@ import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 
 
-export default function AlertDialog(props) {
+export default function AlertDialog({onPress, onClick, productoTitle}) {
 
 
   return (
-    <div>  
-        <DialogTitle>{"Use Google's location service?"}</DialogTitle>
-        <DialogContent>
+    <Container    sx={{
+        position: "fixed",
+        top: "20vh",
+        alignItems: "center",
+        backgroundColor: "#DAA520",
+        borderRadius: "8px",
+        zIndex: "1",
+      }}     >  
+        <DialogTitle>{`¿Quieres eliminar el  ${productoTitle} ?`}</DialogTitle>
+        <DialogContent >
           <DialogContentText id="alert-dialog-slide-description">
-            Let Google help apps determine location. This means sending anonymous
-            location data to Google, even when no apps are running.
+            Este producto quedará eliminado de la base de datos y no podrá ser consultado nuevamentes.
           </DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button onPress={props.handleDisagree}>Disagree</Button>
-          <Button onClick={props.handleAgree}>Agree</Button>
+        <Button onClick={onPress}>Disagree</Button>
+      <Button onClick={onClick}>Agree</Button>
         </DialogActions>
-    </div>
+    </Container >
   );
 }

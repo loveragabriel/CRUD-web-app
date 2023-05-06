@@ -30,13 +30,15 @@ const styles = {
   },
 };
 
-export const Products = (props) => {
+export const Products = (props ) => {
   const [productList, setProductList] = useState([]);
   const [inputUpdate, setInputUpdate] = useState(false);
   const [updateTitleInput, setUpateTitleInput] = useState("");
   const [selectedProductId, setSelectedProductId] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [open, setOpen] = useState(false);
+  const [selectedProductTitle, setSelectedProductTitle] = useState("");
+
 
 
   useEffect(() => {
@@ -74,21 +76,36 @@ export const Products = (props) => {
   //   return
   // };
 
-  const handleDisagree = () => {
-    setOpen(false);
-  };
-  
-  const handleAgree = () => {
-    setOpen(false);
-    // Handle the agree action here
-  };
-  
-   
-
   const deleteProduct = (id) => {
+    const selectedProduct = productList.find((product) => product.id === id);
     setSelectedProductId(id);
+    setSelectedProductTitle(selectedProduct.title);
     setOpen(true);
   };
+
+  const handleDisagree = () => {
+    console.log(open)
+    setOpen(false);
+  };
+  
+  const handleAgree = async (selectedProductId) => {
+    setOpen(false);
+    // Perform the deletion logic here using the selectedProductId
+    try {
+      const productDocRef = doc(db, "products", selectedProductId);
+      await deleteDoc(productDocRef);
+  
+      const updatedList = productList.filter(
+        (product) => product.id !== selectedProductId
+      );
+      setProductList(updatedList);
+    } catch (err) {
+      console.error(err);
+      alert("⚠️ Solo puedes eliminar los productos que hayas creado!");
+    }
+  };
+
+ 
 
   const updateTitle = async () => {
     try {
@@ -168,7 +185,9 @@ export const Products = (props) => {
                   }}
                 >
                   <Tooltip title="Eliminar Producto">
-                    <Icon onClick={() =>  deleteProduct(product.id)}>
+                    <Icon onClick={() =>  {deleteProduct(product.id); setOpen(true); console.log(open)
+                    } 
+                  }>
                       <ClearIcon></ClearIcon>
                     </Icon>
                   </Tooltip>
@@ -193,9 +212,20 @@ export const Products = (props) => {
               </Paper>
             ))
           )}
-{open? (
-  <AlertDialog onPress={handleDisagree} onClick={handleAgree} />
-) : setOpen(false)}        </Container>
+
+
+
+{open && (
+  <AlertDialog
+    onPress={handleDisagree}
+    onClick={() => handleAgree(selectedProductId)}
+    productoTitle={selectedProductTitle}
+  />
+)}
+
+
+
+ </Container>
       )}
     </>
   );
