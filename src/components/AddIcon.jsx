@@ -14,7 +14,7 @@ export const AddIcon = () => {
           ></AddCircleIcon>
         </Icon>
       </Tooltip>
-      {displayForm ? <NewProduct /> : ""}
+      {displayForm && <NewProduct />}
     </div>
   );
 };

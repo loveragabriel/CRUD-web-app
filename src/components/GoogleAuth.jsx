@@ -32,15 +32,13 @@ export const GoogleAuth = () => {
         </Icon>
         Continuar con Google
       </Button>
-      {displayAlert ? (
+      {displayAlert && (
         <Alerta
           severity="success"
           title="Ingresado"
           message="Has ingresado Correctamente"
         />
-      ) : (
-        ""
-      )}
+      ) }
     </div>
   );
 };

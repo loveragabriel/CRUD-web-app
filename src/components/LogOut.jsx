@@ -25,15 +25,13 @@ const LogOut = () => {
         Salir
       </Button>
       <Box>
-        {displayAlert ? (
+        {displayAlert && (
           <Alerta
             severity="success"
             title="Desconectado"
             message="Te has desconectado con Éxito"
           />
-        ) : (
-          ""
-        )}
+        ) }
       </Box>
     </div>
   );

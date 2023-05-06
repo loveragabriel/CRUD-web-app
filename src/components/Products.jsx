@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { Fragment, useEffect, useState } from "react";
 import { getDocs, deleteDoc, doc, updateDoc } from "firebase/firestore";
 import {
   Container,
@@ -14,6 +14,7 @@ import { db } from "../config/firebase";
 import EditIcon from "@mui/icons-material/Edit";
 import { UpdateForm } from "./UpdtaeForm";
 import CircularProgr from "./CircularProgr";
+import AlertDialog from "./AlertDialog";
 
 const styles = {
   title: {
@@ -29,12 +30,14 @@ const styles = {
   },
 };
 
-export const Products = () => {
+export const Products = (props) => {
   const [productList, setProductList] = useState([]);
   const [inputUpdate, setInputUpdate] = useState(false);
   const [updateTitleInput, setUpateTitleInput] = useState("");
   const [selectedProductId, setSelectedProductId] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [open, setOpen] = useState(false);
+
 
   useEffect(() => {
     const getProductList = async () => {
@@ -54,16 +57,37 @@ export const Products = () => {
     getProductList();
   }, []);
 
-  const deleteProduct = async (id) => {
-    try {
-      const productDocRef = doc(db, "products", id);
-      await deleteDoc(productDocRef);
-      const updatedList = productList.filter((product) => product.id !== id);
-      setProductList(updatedList);
-    } catch (err) {
-      console.error(err);
-      alert("⚠️ Solo puedes eliminar los productos que hayas creado!");
-    }
+  // const deleteProduct = async (id) => {
+  //   setSelectedProductId(id);
+  // setOpen(true);
+  //   if(deleteConfirmation){
+  //   try {
+  //     const productDocRef = doc(db, "products", id);
+  //     await deleteDoc(productDocRef);
+  //     const updatedList = productList.filter((product) => product.id !== id);
+  //     setProductList(updatedList);
+  //   } catch (err) {
+  //     console.error(err);
+  //     alert("⚠️ Solo puedes eliminar los productos que hayas creado!");
+  //   }
+  // } else 
+  //   return
+  // };
+
+  const handleDisagree = () => {
+    setOpen(false);
+  };
+  
+  const handleAgree = () => {
+    setOpen(false);
+    // Handle the agree action here
+  };
+  
+   
+
+  const deleteProduct = (id) => {
+    setSelectedProductId(id);
+    setOpen(true);
   };
 
   const updateTitle = async () => {
@@ -92,6 +116,8 @@ export const Products = () => {
     setInputUpdate(true);
   };
 
+
+ 
   return (
     <>
       <Typography variant="h4" style={styles.title}>
@@ -117,10 +143,15 @@ export const Products = () => {
             />
           )}
           {productList.length === 0 ? (
-            <Typography variant="body1" sx={{ margin: "2em" }}>
+            <Fragment>
+            <Typography variant="h4" sx={{ marginTop: "2em", textAlign:'center' }}>
               {" "}
-              No hay productos para mostrar
+             😪 No hay productos para mostrar 
             </Typography>
+            <Typography variant="h5" sx={{textAlign:'center'}} >
+              Pero puedes agregar algunos ingresando arriba a la izquierda!😎
+            </Typography>
+            </Fragment>
           ) : (
             productList.map((product) => (
               <Paper
@@ -137,7 +168,7 @@ export const Products = () => {
                   }}
                 >
                   <Tooltip title="Eliminar Producto">
-                    <Icon onClick={() => deleteProduct(product.id)}>
+                    <Icon onClick={() =>  deleteProduct(product.id)}>
                       <ClearIcon></ClearIcon>
                     </Icon>
                   </Tooltip>
@@ -162,7 +193,9 @@ export const Products = () => {
               </Paper>
             ))
           )}
-        </Container>
+{open? (
+  <AlertDialog onPress={handleDisagree} onClick={handleAgree} />
+) : setOpen(false)}        </Container>
       )}
     </>
   );

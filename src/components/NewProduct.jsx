@@ -8,7 +8,6 @@ const inputStyle = {
   padding: "0.5em",
 };
 
-
 export const NewProduct = () => {
   const [newProductTitle, setNewProductTitle] = useState("");
   const [newProductImg, setNewProductImg] = useState("");
@@ -16,21 +15,32 @@ export const NewProduct = () => {
   const [newCategory, setNewCategory] = useState("");
 
   const onSubmitProduct = async () => {
-    try {
-      await addDoc(productListCollectionRef, {
-        title: newProductTitle,
-        price: newProductPrice,
-        img:
-          newProductImg == null
-            ? "https://cdn.pixabay.com/photo/2016/11/14/03/38/achieve-1822503_1280.jpg"
-            : newProductImg,
-        category: newCategory,
-        userId: auth?.currentUser?.uid,
-      });
-      window.location.reload();
-    } catch (err) {
-      alert("You should be logged");
-      console.error(err);
+    if (
+      !newProductTitle ||
+      !newProductImg ||
+      !newProductPrice ||
+      !newCategory
+    ) {
+      alert("⚠️ al menos un valor está vacío!");
+    } else {
+      try {
+        await addDoc(productListCollectionRef, {
+          title: newProductTitle,
+          price: newProductPrice,
+          img: newProductImg,
+          category: newCategory,
+          userId: auth?.currentUser?.uid,
+        });
+        window.location.reload();
+        alert(
+          "Gracias por agregar un producto. \n Ahora podrás editar el título o eliminarlo"
+        );
+      } catch (err) {
+        alert(
+          "🙄 Necesitas registrarte primero. \n Puedes introducir un correo y contraseña de prueba!"
+        );
+        console.error(err);
+      }
     }
   };
 
@@ -60,12 +70,6 @@ export const NewProduct = () => {
         label="URL Producto"
         type="texto"
         onChange={(e) => setNewProductImg(e.target.value)}
-        onBlur={(e) =>
-          e.target.value === "" &&
-          setNewProductImg(
-            "https://cdn.pixabay.com/photo/2016/11/14/03/38/achieve-1822503_1280.jpg"
-          )
-        }
       />
 
       <TextField
