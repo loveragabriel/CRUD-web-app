@@ -19,8 +19,6 @@ export const SignIn = () => {
     try {
       await createUserWithEmailAndPassword(auth, email, password);
       setDisplayAlert(true);
-      setEmail("");
-      setPassword("");
       setTimeout(() => {
         setDisplayAlert(false);
       }, 3000);
@@ -28,17 +26,15 @@ export const SignIn = () => {
       let codeError = err.code;
       console.log(codeError);
       switch (codeError) {
-        case 'auth/invalid-email':
-          alert('Complete el correo correctament')
-          
+        case "auth/invalid-email":
+          alert("Ingrese un nuevo correo");
           break;
-        case 'auth/missing-password':
-          alert('Ingrese una contraseña mayor a 6 caracteres')
+        case "auth/weak-password" || "auth/missing-password":
+          alert("La contraseña debería contener mínimo 6 caracteres");
           break;
-        case 'auth/weak-password':
-          alert('La contraseña debería contener almenos 6 caracteres')
-        break
-        
+        case "auth/email-already-in-use":
+          alert("El correo ingresado ya fue registrado");
+          break;
         default:
           break;
       }

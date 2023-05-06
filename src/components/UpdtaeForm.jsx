@@ -1,7 +1,7 @@
 import { FormControl, TextField, Button, Tooltip, Icon } from "@mui/material";
 import ClearIcon from "@mui/icons-material/Clear";
 
-export const UpdateForm = (props) => {
+export const UpdateForm = ({ onClick, onChange, onPress }) => {
   return (
     <div
       style={{
@@ -9,7 +9,7 @@ export const UpdateForm = (props) => {
         display: "flex",
         top: "45vh",
         alignItems: "center",
-        backgroundColor: "#4B0082",
+        backgroundColor: "#F2921D",
         padding: "2em",
         borderRadius: "8px",
         zIndex: "1",
@@ -17,7 +17,7 @@ export const UpdateForm = (props) => {
     >
       <FormControl>
         <Tooltip title="Cerrar">
-          <Icon onClick={props.onClick}>
+          <Icon onClick={onClick}>
             <ClearIcon></ClearIcon>
           </Icon>
         </Tooltip>
@@ -27,9 +27,9 @@ export const UpdateForm = (props) => {
           label="Actualizar Título"
           variant="outlined"
           sx={{ padding: "0.5em" }}
-          onChange={props.onChange}
+          onChange={onChange}
         />
-        <Button variant="contained" onClick={props.onPress}>
+        <Button variant="contained" onClick={onPress}>
           Actualizar
         </Button>
       </FormControl>

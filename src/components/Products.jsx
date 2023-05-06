@@ -8,9 +8,8 @@ import {
   Typography,
   Box,
 } from "@mui/material";
-import { productListCollectionRef } from "../config/firebase";
+import { productListCollectionRef, db } from "../config/firebase";
 import ClearIcon from "@mui/icons-material/Clear";
-import { db } from "../config/firebase";
 import EditIcon from "@mui/icons-material/Edit";
 import { UpdateForm } from "./UpdtaeForm";
 import CircularProgr from "./CircularProgr";
@@ -30,7 +29,7 @@ const styles = {
   },
 };
 
-export const Products = (props ) => {
+export const Products = (props) => {
   const [productList, setProductList] = useState([]);
   const [inputUpdate, setInputUpdate] = useState(false);
   const [updateTitleInput, setUpateTitleInput] = useState("");
@@ -38,8 +37,6 @@ export const Products = (props ) => {
   const [isLoading, setIsLoading] = useState(true);
   const [open, setOpen] = useState(false);
   const [selectedProductTitle, setSelectedProductTitle] = useState("");
-
-
 
   useEffect(() => {
     const getProductList = async () => {
@@ -59,23 +56,6 @@ export const Products = (props ) => {
     getProductList();
   }, []);
 
-  // const deleteProduct = async (id) => {
-  //   setSelectedProductId(id);
-  // setOpen(true);
-  //   if(deleteConfirmation){
-  //   try {
-  //     const productDocRef = doc(db, "products", id);
-  //     await deleteDoc(productDocRef);
-  //     const updatedList = productList.filter((product) => product.id !== id);
-  //     setProductList(updatedList);
-  //   } catch (err) {
-  //     console.error(err);
-  //     alert("⚠️ Solo puedes eliminar los productos que hayas creado!");
-  //   }
-  // } else 
-  //   return
-  // };
-
   const deleteProduct = (id) => {
     const selectedProduct = productList.find((product) => product.id === id);
     setSelectedProductId(id);
@@ -84,17 +64,14 @@ export const Products = (props ) => {
   };
 
   const handleDisagree = () => {
-    console.log(open)
     setOpen(false);
   };
-  
-  const handleAgree = async (selectedProductId) => {
+
+  const handleAgreeDelete = async (selectedProductId) => {
     setOpen(false);
-    // Perform the deletion logic here using the selectedProductId
     try {
       const productDocRef = doc(db, "products", selectedProductId);
       await deleteDoc(productDocRef);
-  
       const updatedList = productList.filter(
         (product) => product.id !== selectedProductId
       );
@@ -104,8 +81,6 @@ export const Products = (props ) => {
       alert("⚠️ Solo puedes eliminar los productos que hayas creado!");
     }
   };
-
- 
 
   const updateTitle = async () => {
     try {
@@ -133,8 +108,6 @@ export const Products = (props ) => {
     setInputUpdate(true);
   };
 
-
- 
   return (
     <>
       <Typography variant="h4" style={styles.title}>
@@ -161,13 +134,16 @@ export const Products = (props ) => {
           )}
           {productList.length === 0 ? (
             <Fragment>
-            <Typography variant="h4" sx={{ marginTop: "2em", textAlign:'center' }}>
-              {" "}
-             😪 No hay productos para mostrar 
-            </Typography>
-            <Typography variant="h5" sx={{textAlign:'center'}} >
-              Pero puedes agregar algunos ingresando arriba a la izquierda!😎
-            </Typography>
+              <Typography
+                variant="h4"
+                sx={{ marginTop: "2em", textAlign: "center" }}
+              >
+                {" "}
+                😪 No hay productos para mostrar
+              </Typography>
+              <Typography variant="h5" sx={{ textAlign: "center" }}>
+                Pero puedes agregar algunos ingresando arriba a la izquierda!😎
+              </Typography>
             </Fragment>
           ) : (
             productList.map((product) => (
@@ -185,9 +161,12 @@ export const Products = (props ) => {
                   }}
                 >
                   <Tooltip title="Eliminar Producto">
-                    <Icon onClick={() =>  {deleteProduct(product.id); setOpen(true); console.log(open)
-                    } 
-                  }>
+                    <Icon
+                      onClick={() => {
+                        deleteProduct(product.id);
+                        setOpen(true);
+                      }}
+                    >
                       <ClearIcon></ClearIcon>
                     </Icon>
                   </Tooltip>
@@ -213,19 +192,14 @@ export const Products = (props ) => {
             ))
           )}
 
-
-
-{open && (
-  <AlertDialog
-    onPress={handleDisagree}
-    onClick={() => handleAgree(selectedProductId)}
-    productoTitle={selectedProductTitle}
-  />
-)}
-
-
-
- </Container>
+          {open && (
+            <AlertDialog
+              onPress={handleDisagree}
+              onClick={() => handleAgreeDelete(selectedProductId)}
+              productoTitle={selectedProductTitle}
+            />
+          )}
+        </Container>
       )}
     </>
   );

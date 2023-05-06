@@ -38,7 +38,7 @@ export const GoogleAuth = () => {
           title="Ingresado"
           message="Has ingresado Correctamente"
         />
-      ) }
+      )}
     </div>
   );
 };

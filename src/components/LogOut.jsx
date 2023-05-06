@@ -31,7 +31,7 @@ const LogOut = () => {
             title="Desconectado"
             message="Te has desconectado con Éxito"
           />
-        ) }
+        )}
       </Box>
     </div>
   );
