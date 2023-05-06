@@ -2,8 +2,7 @@ import { createUserWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../config/firebase";
 import { useState } from "react";
 import { FormControl, TextField, Button } from "@mui/material";
-import { Alerta } from "./Alerta";
-
+import { CustomAlert } from "./CustomAlert";
 const signInStyles = {
   inputs: {
     margin: "0.1em",
@@ -62,7 +61,7 @@ export const SignIn = () => {
         </Button>
       </FormControl>
       {displayAlert ? (
-        <Alerta
+        <CustomAlert
           severity="success"
           title="Ingresado"
           message="Has ingresado Correctamente"

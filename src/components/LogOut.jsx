@@ -2,7 +2,7 @@ import { Button } from "@mui/material";
 import { auth } from "../config/firebase";
 import { signOut } from "firebase/auth";
 import { useState } from "react";
-import { Alerta } from "./Alerta";
+import { CustomAlert } from "./CustomAlert";
 import { Box } from "@mui/material";
 
 const LogOut = () => {
@@ -26,7 +26,7 @@ const LogOut = () => {
       </Button>
       <Box>
         {displayAlert && (
-          <Alerta
+          <CustomAlert
             severity="success"
             title="Desconectado"
             message="Te has desconectado con Éxito"

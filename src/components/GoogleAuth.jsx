@@ -2,7 +2,7 @@ import { auth, googleProvider } from "../config/firebase";
 import { signInWithPopup } from "firebase/auth";
 import { Button, Icon } from "@mui/material";
 import { Google } from "@mui/icons-material";
-import { Alerta } from "./Alerta";
+import { CustomAlert } from "./CustomAlert";
 import { useState } from "react";
 
 export const GoogleAuth = () => {
@@ -25,7 +25,8 @@ export const GoogleAuth = () => {
       <Button
         variant="outlined"
         onClick={signInWithGoogle}
-        sx={{ margin: "1em" }}
+        sx={{ margin: "1em", alignItems:'center' }}
+        
       >
         <Icon>
           <Google></Google>
@@ -33,7 +34,7 @@ export const GoogleAuth = () => {
         Continuar con Google
       </Button>
       {displayAlert && (
-        <Alerta
+        <CustomAlert
           severity="success"
           title="Ingresado"
           message="Has ingresado Correctamente"

@@ -1,6 +1,6 @@
 import { Alert, AlertTitle } from "@mui/material";
 
-export const Alerta = ({ type, title, message }) => {
+export const CustomAlert = ({ type, title, message }) => {
   return (
     <Alert
       severity={type}
