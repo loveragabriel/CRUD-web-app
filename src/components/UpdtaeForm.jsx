@@ -29,7 +29,7 @@ export const UpdateForm = ({ onClick, onChange, onPress, onChangePrice }) => {
           sx={{ padding: "0.5em" }}
           onChange={onChange}
         />
-         <TextField
+        <TextField
           id="outlined-basic"
           label="Precio"
           variant="outlined"

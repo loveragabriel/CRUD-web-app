@@ -59,9 +59,11 @@ export const Products = (props) => {
 
   const deleteProduct = (id) => {
     const selectedProduct = productList.find((product) => product.id === id);
-    setSelectedProductId(id);
-    setSelectedProductTitle(selectedProduct.title);
-    setOpen(true);
+    if (selectedProduct.userId === auth.currentUser?.uid) {
+      setSelectedProductId(id);
+      setSelectedProductTitle(selectedProduct.title);
+      setOpen(true);
+    }
   };
 
   const handleDisagree = () => {
@@ -86,12 +88,15 @@ export const Products = (props) => {
   const updateProduct = async () => {
     try {
       const productDocRef = doc(db, "products", selectedProductId);
-      await updateDoc(productDocRef, { title: updateTitle, price: updatePrice  });
+      await updateDoc(productDocRef, {
+        title: updateTitle,
+        price: updatePrice,
+      });
       setInputUpdate(false);
-      console.log(updateTitle, updatePrice)
+      console.log(updateTitle, updatePrice);
       const updatedList = productList.map((product) => {
         if (product.id === selectedProductId) {
-          return { ...product, title: updateTitle, price: updatePrice  };
+          return { ...product, title: updateTitle, price: updatePrice };
         } else {
           return product;
         }
@@ -99,8 +104,8 @@ export const Products = (props) => {
       setProductList(updatedList);
     } catch (err) {
       console.error(err);
-       const codeError = err.code; 
-      console.log(codeError)
+      const codeError = err.code;
+      console.log(codeError);
       alert(
         "⚠️ Solo puedes editar los productos al ingresar con correo y contraseña!"
       );
@@ -134,7 +139,7 @@ export const Products = (props) => {
               onClick={() => setInputUpdate(false)}
               onPress={() => updateProduct()}
               onChange={(e) => setUpdateTitle(e.target.value)}
-              onChangePrice={(e)=> setUpdatePrice(e.target.value)} 
+              onChangePrice={(e) => setUpdatePrice(e.target.value)}
             />
           )}
           {productList.length === 0 ? (

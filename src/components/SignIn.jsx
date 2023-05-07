@@ -14,7 +14,6 @@ export const SignIn = () => {
   const [password, setPassword] = useState("");
   const [displayAlert, setDisplayAlert] = useState("");
 
-  
   const signIn = async () => {
     try {
       await createUserWithEmailAndPassword(auth, email, password);
