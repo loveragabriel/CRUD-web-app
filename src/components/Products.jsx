@@ -8,7 +8,7 @@ import {
   Typography,
   Box,
 } from "@mui/material";
-import { productListCollectionRef, db } from "../config/firebase";
+import { productListCollectionRef, db, auth } from "../config/firebase";
 import ClearIcon from "@mui/icons-material/Clear";
 import EditIcon from "@mui/icons-material/Edit";
 import { UpdateForm } from "./UpdtaeForm";

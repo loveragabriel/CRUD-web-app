@@ -8,7 +8,7 @@ export const AddIcon = () => {
   return (
     <div>
       <Tooltip title="Agregar Producto">
-        <Icon sx={{ position: "fixed" }}>
+        <Icon sx={{ display:'flex' }}>
           <AddCircleIcon
             onClick={() => setDisplayForm(!displayForm)}
           ></AddCircleIcon>
