@@ -1,7 +1,7 @@
 import { FormControl, TextField, Button, Tooltip, Icon } from "@mui/material";
 import ClearIcon from "@mui/icons-material/Clear";
 
-export const UpdateForm = ({ onClick, onChange, onPress }) => {
+export const UpdateForm = ({ onClick, onChange, onPress, onChangePrice }) => {
   return (
     <div
       style={{
@@ -24,10 +24,17 @@ export const UpdateForm = ({ onClick, onChange, onPress }) => {
 
         <TextField
           id="outlined-basic"
-          label="Actualizar Título"
+          label="Título"
           variant="outlined"
           sx={{ padding: "0.5em" }}
           onChange={onChange}
+        />
+         <TextField
+          id="outlined-basic"
+          label="Precio"
+          variant="outlined"
+          sx={{ padding: "0.5em" }}
+          onChange={onChangePrice}
         />
         <Button variant="contained" onClick={onPress}>
           Actualizar

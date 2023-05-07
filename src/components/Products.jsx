@@ -32,7 +32,8 @@ const styles = {
 export const Products = (props) => {
   const [productList, setProductList] = useState([]);
   const [inputUpdate, setInputUpdate] = useState(false);
-  const [updateTitleInput, setUpateTitleInput] = useState("");
+  const [updateTitle, setUpdateTitle] = useState("");
+  const [updatePrice, setUpdatePrice] = useState("");
   const [selectedProductId, setSelectedProductId] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [open, setOpen] = useState(false);
@@ -82,14 +83,15 @@ export const Products = (props) => {
     }
   };
 
-  const updateTitle = async () => {
+  const updateProduct = async () => {
     try {
       const productDocRef = doc(db, "products", selectedProductId);
-      await updateDoc(productDocRef, { title: updateTitleInput });
+      await updateDoc(productDocRef, { title: updateTitle, price: updatePrice  });
       setInputUpdate(false);
+      console.log(updateTitle, updatePrice)
       const updatedList = productList.map((product) => {
         if (product.id === selectedProductId) {
-          return { ...product, title: updateTitleInput };
+          return { ...product, title: updateTitle, price: updatePrice  };
         } else {
           return product;
         }
@@ -97,6 +99,8 @@ export const Products = (props) => {
       setProductList(updatedList);
     } catch (err) {
       console.error(err);
+       const codeError = err.code; 
+      console.log(codeError)
       alert(
         "⚠️ Solo puedes editar los productos al ingresar con correo y contraseña!"
       );
@@ -128,8 +132,9 @@ export const Products = (props) => {
           {inputUpdate && selectedProductId && (
             <UpdateForm
               onClick={() => setInputUpdate(false)}
-              onPress={() => updateTitle()}
-              onChange={(e) => setUpateTitleInput(e.target.value)}
+              onPress={() => updateProduct()}
+              onChange={(e) => setUpdateTitle(e.target.value)}
+              onChangePrice={(e)=> setUpdatePrice(e.target.value)} 
             />
           )}
           {productList.length === 0 ? (
